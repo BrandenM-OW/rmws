@@ -11,6 +11,7 @@ use rmws::ThreadPool;
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:4200").unwrap();
     let pool = ThreadPool::new(4);
+
     for stream in listener.incoming() {
         let stream = stream.unwrap();
         pool.execute(|| {
@@ -35,6 +36,7 @@ fn handle_connection(mut stream: TcpStream) {
 
 fn capture_request(buffer: BufReader<&mut TcpStream>) -> Vec<String> {
     let mut http_request: Vec<String> = Vec::new();
+
     for line in buffer.lines() {
         let line = line.unwrap();
         if line.len() == 0 {
@@ -42,6 +44,7 @@ fn capture_request(buffer: BufReader<&mut TcpStream>) -> Vec<String> {
         }
         http_request.push(line);
     }
+
     http_request
 }
 
